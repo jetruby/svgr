@@ -9,6 +9,7 @@ import replaceAttrValue from './h2x/replaceAttrValue'
 import removeComments from './h2x/removeComments'
 import removeStyle from './h2x/removeStyle'
 import toReactNative from './h2x/toReactNative'
+import { merge } from 'lodash'
 
 const defaultConfig = {
   ref: false,
@@ -20,6 +21,7 @@ const defaultConfig = {
   replaceAttrValues: [],
   expandProps: true,
   title: true,
+  prefixID: '',
   keepUselessDefs: false,
   ids: false,
   precision: 3, // default to svgo
@@ -59,7 +61,16 @@ function configToOptions(config = {}) {
     else if (config.title) plugins.push({ removeTitle: false })
     if (config.viewBox) plugins.push({ removeViewBox: false })
     if (config.keepUselessDefs) plugins.push({ removeUselessDefs: false })
-    if (config.ids) plugins.push({ cleanupIDs: { remove: false } })
+
+    let cleanupIDs = {}
+    if (config.ids) {
+      cleanupIDs = { remove: false }
+    }
+    if (config.prefixID) {
+      cleanupIDs = merge(cleanupIDs, { prefix: config.prefixID })
+    }
+    plugins.push({ cleanupIDs })
+
     if (config.precision === 'number')
       svgoConfig.floatPrecision = Number(svgoConfig.precision)
     return svgoConfig

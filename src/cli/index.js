@@ -20,6 +20,7 @@ program
   .usage('[options] <file>')
   .option('-d, --out-dir <dirname>', 'output files into a directory')
   .option('--no-svgo', 'disable SVGO')
+  .option('--prefixID <prefix>', 'prefixes all IDs with a specified prefix')
   .option('--no-prettier', 'disable Prettier')
   .option('--template <file>', 'specify a custom template to use')
   .option('--ext <ext>', 'specify a custom file extension (default: "js")')
